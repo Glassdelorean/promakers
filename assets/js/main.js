@@ -4,6 +4,10 @@
    card glow tracking, contact form, footer year.
    ============================================================ */
 
+/* URL HTTP-триггера Yandex Cloud Function (прокси формы → Lark Bitable).
+   Подставьте реальный адрес после создания функции (см. function/README.md). */
+const FORM_ENDPOINT = "https://functions.yandexcloud.net/d4el0gcapklb2jk5gsj3";
+
 document.addEventListener("DOMContentLoaded", () => {
   /* ---------- Footer year ---------- */
   const yearEl = document.getElementById("year");
@@ -85,17 +89,53 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ---------- Contact form (demo handler) ---------- */
+  /* ---------- Contact form → Yandex Cloud Function (Lark Bitable) ---------- */
   const form = document.getElementById("contact-form");
   const success = document.getElementById("form-success");
-  form.addEventListener("submit", (e) => {
+  const errorBox = document.getElementById("form-error");
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
-    success.hidden = false;
-    form.reset();
-    setTimeout(() => { success.hidden = true; }, 6000);
+    if (success) success.hidden = true;
+    if (errorBox) errorBox.hidden = true;
+
+    const dict = I18N[window.PM_LANG] || I18N.ru;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = dict["form.sending"];
+
+    const fd = new FormData(form);
+    const payload = {
+      fields: {
+        "Имя": (fd.get("name") || "").toString().trim(),
+        "Компания": (fd.get("company") || "").toString().trim(),
+        "E-mail": (fd.get("email") || "").toString().trim(),
+        "Телефон": (fd.get("phone") || "").toString().trim(),
+        "Задача": (fd.get("message") || "").toString().trim(),
+      },
+    };
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (success) success.hidden = false;
+      form.reset();
+      setTimeout(() => { success.hidden = true; }, 8000);
+    } catch (err) {
+      console.error("Form submit failed:", err);
+      if (errorBox) errorBox.hidden = false;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
   });
 });
