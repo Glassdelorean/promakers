@@ -1,0 +1,39 @@
+name: Deploy to Yandex Cloud Storage
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # ручной запуск из вкладки Actions
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure credentials for Yandex Cloud Storage
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.YC_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.YC_SECRET_ACCESS_KEY }}
+          aws-region: ru-central1          # значение формальное, для S3 не важно
+          aws-endpoint: https://storage.yandexcloud.net
+
+      - name: Sync site to bucket
+        run: |
+          aws s3 sync . "s3://${{ secrets.YC_BUCKET_NAME }}" \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude ".gitignore" \
+            --exclude "README.md" \
+            --exclude "LICENSE" \
+            --cache-control "max-age=3600"
+
+      - name: Verify deploy
+        run: |
+          aws s3 ls "s3://${{ secrets.YC_BUCKET_NAME }}" --recursive | head -20
