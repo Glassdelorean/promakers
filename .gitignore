@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Node (если появятся инструменты разработки)
+node_modules/
+npm-debug.log*
+
+# Сборка и временные файлы
+dist/
+build/
+.cache/
+*.log
+*.tmp
