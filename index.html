@@ -208,9 +208,16 @@
             разбор задачи и предложит план действий.
           </p>
           <ul class="contact__list">
-            <li><span class="contact__list-icon">✉</span><span data-i18n="contact.emailLabel">Почта для заявок</span><a href="mailto:hello@promakers.pro">hello@promakers.pro</a></li>
+            <li><span class="contact__list-icon">✉</span><span data-i18n="contact.emailLabel">Почта для заявок</span><a href="mailto:info@promakers.pro">info@promakers.pro</a></li>
             <li><span class="contact__list-icon">◎</span><span data-i18n="contact.siteLabel">Сайт</span><a href="https://promakers.pro" target="_blank" rel="noopener">promakers.pro</a></li>
           </ul>
+
+          <div class="qr reveal">
+            <div class="qr__img-wrap">
+              <img src="assets/img/qr-site.png" alt="QR-код сайта promakers.pro" class="qr__img" width="560" height="560">
+            </div>
+            <p class="qr__caption" data-i18n="contact.qrCaption">Наведите камеру, чтобы открыть сайт</p>
+          </div>
         </div>
 
         <form class="form reveal" id="contact-form" novalidate>
@@ -220,13 +227,19 @@
               <input type="text" id="f-name" name="name" required data-i18n-ph="form.namePh" placeholder="Как к вам обращаться">
             </div>
             <div class="form__field">
-              <label for="f-company" data-i18n="form.company">Компания</label>
+              <label for="f-company"><span data-i18n="form.company">Компания</span> <span class="form__opt" data-i18n="form.optional">(необязательно)</span></label>
               <input type="text" id="f-company" name="company" data-i18n-ph="form.companyPh" placeholder="Название организации">
             </div>
           </div>
-          <div class="form__field">
-            <label for="f-email" data-i18n="form.email">E-mail</label>
-            <input type="email" id="f-email" name="email" required placeholder="you@company.com">
+          <div class="form__row">
+            <div class="form__field">
+              <label for="f-email" data-i18n="form.email">E-mail</label>
+              <input type="email" id="f-email" name="email" required placeholder="you@company.com">
+            </div>
+            <div class="form__field">
+              <label for="f-phone"><span data-i18n="form.phone">Телефон</span> <span class="form__opt" data-i18n="form.optional">(необязательно)</span></label>
+              <input type="tel" id="f-phone" name="phone" autocomplete="tel" data-i18n-ph="form.phonePh" placeholder="+7 (___) ___-__-__">
+            </div>
           </div>
           <div class="form__field">
             <label for="f-message" data-i18n="form.message">Задача</label>

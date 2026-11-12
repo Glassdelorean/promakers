@@ -610,3 +610,38 @@ img { max-width: 100%; display: block; }
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/* ---------- QR code (contacts) ---------- */
+.qr {
+  margin-top: 30px;
+  padding: 22px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--border);
+  text-align: center;
+  max-width: 260px;
+}
+.qr__img-wrap {
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+.qr__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.qr__caption {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+/* Optional-field marker */
+.form__opt {
+  font-weight: 400;
+  color: rgba(154, 167, 191, 0.7);
+  font-size: 12px;
+}
